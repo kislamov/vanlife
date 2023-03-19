@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import {BrowserRouter as Router, Link} from "react-router-dom";
 
+import "./server"
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
@@ -12,6 +14,7 @@ root.render(
                 <Link className="site-logo" to="/">#VanLife</Link>
                 <nav>
                     <Link to="/about">About</Link>
+                    <Link to="/Vans">Vans</Link>
                 </nav>
             </header>
             <App/>
