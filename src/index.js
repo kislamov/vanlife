@@ -10,13 +10,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <Router>
-            <header>
-                <Link className="site-logo" to="/">#VanLife</Link>
-                <nav>
-                    <Link to="/about">About</Link>
-                    <Link to="/Vans">Vans</Link>
-                </nav>
-            </header>
+            
             <App/>
         </Router>
     </React.StrictMode>
