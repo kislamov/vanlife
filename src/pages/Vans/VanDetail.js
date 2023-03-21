@@ -1,15 +1,20 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {getVans} from "../../api";
 
 const VanDetail = () => {
     const [van, setVan] = useState(null)
     const { id } = useParams()
+    const location = useLocation()
+
+    const backBtn = location.state?.search || ""
+    const type = location.state?.type || "all"
+
 
     useEffect(() => {
         const getVan = async () => {
-            const res = await fetch(`/api/vans/${id}`)
-            const data = await res.json()
-            setVan(data.vans)
+            const data = await getVans(id)
+            setVan(data)
         }
 
         getVan()
@@ -17,6 +22,11 @@ const VanDetail = () => {
 
     return (
         <div className="van-detail-container">
+            <Link
+                to={ `..${backBtn}` }
+                relative="path"
+                className="back-button"
+            >&larr; <span>Back to { type } vans</span></Link>
             {van ? (
                 <div className="van-detail">
                     <img src={van.imageUrl} />
