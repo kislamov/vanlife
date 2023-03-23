@@ -12,6 +12,10 @@ const Header = () => {
         return isActive ? activeStyles : null
     }
 
+    function fakeLogOut() {
+        localStorage.removeItem("loggedin")
+    }
+
     return (
         <header>
                 <Link className="site-logo" to="/">#VanLife</Link>
@@ -19,6 +23,7 @@ const Header = () => {
                     <NavLink style={onActive} to="/host">Host</NavLink>
                     <NavLink style={onActive} to="/about">About</NavLink>
                     <NavLink style={onActive} to="/vans">Vans</NavLink>
+                    <button onClick={fakeLogOut}>X</button>
                 </nav>
         </header>
     );
