@@ -1,42 +1,34 @@
-import {Link, useParams, useLocation} from "react-router-dom";
+import {Link, useParams, useLocation, useLoaderData} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getVans} from "../../api";
+import {requireAuth} from "../../utils";
+
+export const loader = async ({ params }) => {
+    return await getVans(params.id)
+}
 
 const VanDetail = () => {
-    const [van, setVan] = useState(null)
-    const { id } = useParams()
+    const van = useLoaderData()
     const location = useLocation()
 
     const backBtn = location.state?.search || ""
     const type = location.state?.type || "all"
 
-
-    useEffect(() => {
-        const getVan = async () => {
-            const data = await getVans(id)
-            setVan(data)
-        }
-
-        getVan()
-    }, [id])
-
     return (
         <div className="van-detail-container">
             <Link
-                to={ `..${backBtn}` }
+                to={`..${backBtn}`}
                 relative="path"
                 className="back-button"
-            >&larr; <span>Back to { type } vans</span></Link>
-            {van ? (
-                <div className="van-detail">
-                    <img src={van.imageUrl} />
-                    <i className={`van-type ${van.type} selected`}>{van.type}</i>
-                    <h2>{van.name}</h2>
-                    <p className="van-price"><span>${van.price}</span>/day</p>
-                    <p>{van.description}</p>
-                    <button className="link-button">Rent this van</button>
-                </div>
-            ) : <h2>Loading...</h2>}
+            >&larr; <span>Back to {type} vans</span></Link>
+            <div className="van-detail">
+                <img src={van.imageUrl}/>
+                <i className={`van-type ${van.type} selected`}>{van.type}</i>
+                <h2>{van.name}</h2>
+                <p className="van-price"><span>${van.price}</span>/day</p>
+                <p>{van.description}</p>
+                <button className="link-button">Rent this van</button>
+            </div>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import {Form, useActionData, useLocation, useNavigate, useNavigation} from "react-router-dom";
+import {Form, redirect, useActionData, useLoaderData, useNavigation} from "react-router-dom";
 import {loginUser} from "../api";
 
 export const action = async ({ request }) => {
@@ -6,36 +6,34 @@ export const action = async ({ request }) => {
     const email = formData.get('email')
     const password = formData.get('password')
     try {
-        return await loginUser({email, password})
-    } catch (err){
-        return {
-            error: err.message
-        }
+        const data = await loginUser({ email, password })
+        localStorage.setItem("loggedin", true)
+        return redirect("/host")
+    } catch(err) {
+        return err.message
     }
+}
+
+export const loader = async ({ request }) => {
+    return new URL(request.url).searchParams.get("message");
 }
 
 const Login = () => {
     const data = useActionData()
     const navigation = useNavigation()
     const { state: status } = navigation
-
-    const location = useLocation()
-    const navigate = useNavigate()
-
-    const from = location.state?.from || "../host"
-
-    if (data?.token) {
-        localStorage.setItem("loggedin", true)
-        navigate(from, {replace: true})
-    }
-
+    const message = useLoaderData()
 
     return (
         <div className="login-container">
-            { location.state?.message && <h3 className="login-first">{location.state.message}</h3> }
+            { message && <h3 className="login-first">{message}</h3> }
             <h1>Sign in to your account</h1>
             { data?.error && <h3 className="login-first">{data.error}</h3> }
-            <Form action="/login" method="post"className="login-form">
+            <Form
+                action="/login"
+                method="post"
+                className="login-form"
+            >
                 <input
                     name="email"
                     type="email"

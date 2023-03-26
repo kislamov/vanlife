@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import { getVans } from "../../api";
+import {requireAuth} from "../../utils";
 
-export const loader = () => {
-    return getVans()
+export const loader = async () => {
+    return await getVans()
 }
 
 const Vans = () => {
